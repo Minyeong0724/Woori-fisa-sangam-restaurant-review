@@ -4,6 +4,22 @@
 
 ---
 
+## 📌 목차
+- [기술 스택](#기술-스택)
+- [실행 방법](#실행-방법)
+- [프로젝트 구조](#프로젝트-구조)
+- [3-Tier 계층 구성](#3-tier-계층-구성)
+- [DispatcherServlet 흐름](#dispatcherservlet-흐름)
+- [기능 목록](#기능-목록)
+    - [1. 메인 페이지](#1-메인-페이지-get-restaurant)
+    - [2. 전체 목록 조회](#2-전체-목록-조회-get-restaurantlist)
+    - [3. 카테고리 필터](#3-카테고리-필터-get-restaurantlistcategorycategory)
+    - [4. 상세 페이지](#4-상세-페이지-get-restaurantid)
+    - [5. 랜덤 추천](#5-랜덤-추천-get-restaurantrandom)
+    - [6. 맛집 등록](#6-맛집-등록-get-restaurantnew-post-restaurant)
+
+---
+
 ## 기술 스택
 
 - Java 17
