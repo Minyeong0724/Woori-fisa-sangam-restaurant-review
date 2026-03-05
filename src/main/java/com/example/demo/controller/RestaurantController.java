@@ -6,10 +6,7 @@ import com.example.demo.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,5 +51,20 @@ public class RestaurantController {
         model.addAttribute("restaurant", restaurantService.getRandomRestaurant());
         model.addAttribute("isRandom", true);
         return "detail";
+    }
+
+    @GetMapping("/new")
+    public String addForm(Model model) {
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("restaurant", new Restaurant()); // 빈 객체를 넘겨서 폼 세팅
+        return "addForm";
+    }
+
+    // 2. 맛집 등록 데이터 처리하기 (POST)
+    @PostMapping
+    public String addRestaurant(@ModelAttribute Restaurant restaurant) {
+        restaurantService.save(restaurant);
+        // 처리 완료 후, 뷰(html)를 렌더링하지 않고 목록 URL로 리다이렉트 (PRG 패턴)
+        return "redirect:/restaurant/list";
     }
 }

@@ -40,4 +40,12 @@ public class RestaurantRepository {
                 .filter(r -> r.getCategory() == category)
                 .collect(Collectors.toList());
     }
+
+    private Long sequence = 6L; // 마지막 더미 데이터의 ID가 6이므로
+
+    // 맛집 저장 기능 추가
+    public void save(Restaurant restaurant) {
+        restaurant.setId(++sequence);
+        restaurants.add(restaurant);
+    }
 }
