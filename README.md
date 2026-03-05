@@ -43,7 +43,7 @@ src/main/resources/
 ├── templates/
 │   ├── index.html    # 메인 페이지
 │   ├── list.html     # 목록 페이지
-│   ├── addForm.html     # 등록 페이지
+│   ├── addForm.html  # 등록 페이지
 │   └── detail.html   # 상세 / 랜덤 결과 페이지
 └── application.properties
 ```
