@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
     KOREAN("한식"),
     JAPANESE("일식"),
@@ -12,7 +15,4 @@ public enum Category {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
 }

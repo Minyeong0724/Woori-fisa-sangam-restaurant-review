@@ -32,4 +32,8 @@ public class RestaurantService {
     public List<Restaurant> getByCategory(Category category) {
         return restaurantRepository.findByCategory(category);
     }
+
+    public void save(Restaurant restaurant) {
+        restaurantRepository.save(restaurant);
+    }
 }
