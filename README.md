@@ -1,6 +1,5 @@
 # Woori-fisa-sangam-restaurant-review
-Spring MVC Flow Review (Sangam Food)
-
+상암동의 맛집 리스트를 볼 수 있는 Spring MVC 실습 프로젝트입니다. 
 ---
 
 ## 기술 스택
@@ -11,6 +10,16 @@ Spring MVC Flow Review (Sangam Food)
 - Thymeleaf (SSR)
 - Lombok
 - Gradle
+
+---
+
+## 실행 방법
+
+```bash
+./gradlew bootRun
+```
+
+브라우저에서 `http://localhost:8080/restaurant` 접속
 
 ---
 
@@ -63,6 +72,31 @@ Repository  →  DB 대신 List<Restaurant>으로 데이터 보관 및 조회
 7. ViewResolver      → "detail" → /templates/detail.html 매핑
 8. Thymeleaf         → th:text="${restaurant.name}" 등 HTML 렌더링
 9. Response          → 완성된 HTML → 브라우저
+```
+
+`GET /restaurant/new` 등록 폼 호출 기준
+```
+1. DispatcherServlet → 요청 수신
+2. HandlerMapping    → @GetMapping("/new") 탐색, RestaurantController.addForm() 선택
+3. HandlerAdapter    → 컨트롤러 메서드 실행
+4. Controller        → model.addAttribute로 카테고리 목록과 빈 Restaurant 객체 적재
+5. DispatcherServlet → 반환값 "addForm" 수신
+6. ViewResolver      → "addForm" → /templates/addForm.html 매핑
+7. Thymeleaf         → th:object, th:field 등을 활용해 입력 폼 HTML 렌더링
+8. Response          → 완성된 등록 폼 HTML → 브라우저
+```
+
+`POST /restaurant` 맛집 등록 및 리다이렉트 기준
+```
+1. DispatcherServlet → POST 요청 및 폼 데이터 수신
+2. HandlerMapping    → @PostMapping 탐색, RestaurantController.addRestaurant() 선택
+3. HandlerAdapter    → Data Binding 수행 (폼 데이터를 Restaurant 객체로 변환) 후 메서드 실행
+4. Service → Repository → ArrayList에 새로운 맛집 객체 저장 (In-memory)
+5. Controller        → 반환값 "redirect:/restaurant/list" 수신
+6. DispatcherServlet → "redirect:" 접두어를 확인하고 리다이렉트 응답 결정
+7. Response          → 브라우저에 HTTP 302 (Found) 상태 코드와 이동 경로 전달
+8. Browser           → 전달받은 경로(/restaurant/list)로 새로운 GET 요청 발송
+9. DispatcherServlet → 새로운 GET 요청을 수신하여 목록 페이지 흐름 시작 (PRG 패턴 완성)
 ```
 
 ---
@@ -151,13 +185,5 @@ public String random(Model model) {
 ```
 ---
 
-## 실행 방법
 
-```bash
-./gradlew bootRun
-```
 
-브라우저에서 `http://localhost:8080/restaurant` 접속
-
-> MySQL 드라이버가 classpath에 포함되어 있으나 DB 연결 없이 실행합니다.
-> `application.properties`에서 DataSource 자동설정을 제외 처리했습니다.
