@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${restaurant.name}">맛집 상세</title>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #e74c3c; color: white; padding: 20px 30px; display: flex; align-items: center; gap: 15px; }
+        .header a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.8; }
+        .header h1 { margin: 0; font-size: 1.3rem; }
+        .random-banner {
+            background: #fff3cd; border-left: 5px solid #ffc107;
+            padding: 14px 30px; font-size: 0.95rem; color: #856404;
+        }
+        .container { max-width: 700px; margin: 40px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .restaurant-name { font-size: 2rem; font-weight: bold; margin: 0 0 8px; }
+        .badge {
+            display: inline-block; padding: 4px 14px; border-radius: 14px;
+            background: #fdecea; color: #e74c3c; font-size: 0.85rem; margin-right: 6px;
+        }
+        .badge-solo { background: #e8f5e9; color: #2e7d32; }
+        .divider { border: none; border-top: 1px solid #eee; margin: 25px 0; }
+        .info-row { display: flex; gap: 10px; margin-bottom: 14px; font-size: 0.95rem; }
+        .info-label { color: #999; min-width: 70px; }
+        .info-value { color: #333; font-weight: 500; }
+        .price-big { font-size: 1.6rem; font-weight: bold; color: #e74c3c; }
+        .btn-group { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+        .btn {
+            padding: 12px 28px; border-radius: 8px; text-decoration: none;
+            font-size: 0.95rem; font-weight: bold;
+        }
+        .btn-primary { background: #e74c3c; color: white; }
+        .btn-secondary { background: #eee; color: #333; }
+        .btn-outline { border: 2px solid #e74c3c; color: #e74c3c; background: white; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="/restaurant">홈</a>
+    <h1 th:text="${isRandom} ? '오늘의 랜덤 추천!' : '맛집 상세'"></h1>
+</div>
+
+<div th:if="${isRandom}" class="random-banner">
+    오늘 점심 고민 끝! 랜덤으로 뽑아드렸어요.
+</div>
+
+<div class="container">
+    <div class="card">
+        <p class="restaurant-name" th:text="${restaurant.name}"></p>
+
+        <div>
+            <span class="badge" th:text="${restaurant.category.displayName}"></span>
+            <span th:if="${restaurant.soloFriendly}" class="badge badge-solo">혼밥 OK</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="info-row">
+            <span class="info-label">메뉴</span>
+            <span class="info-value" th:text="${restaurant.menu}"></span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">주소</span>
+            <span class="info-value" th:text="${restaurant.address}"></span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">한줄평</span>
+            <span class="info-value" th:text="${restaurant.description}"></span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">평균 가격</span>
+            <span class="price-big" th:text="${#numbers.formatInteger(restaurant.avgPrice, 0, 'COMMA') + '원~'}"></span>
+        </div>
+
+        <div class="btn-group">
+            <a href="/restaurant/random" class="btn btn-primary">다시 뽑기</a>
+            <a href="/restaurant/list" class="btn btn-secondary">전체 목록</a>
+            <a href="/restaurant" class="btn btn-outline">홈으로</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

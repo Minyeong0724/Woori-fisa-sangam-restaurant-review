@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>맛집 목록</title>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        .header { background: #e74c3c; color: white; padding: 20px 30px; display: flex; align-items: center; gap: 15px; }
+        .header a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.8; }
+        .header h1 { margin: 0; font-size: 1.3rem; }
+        .filter-bar { background: white; padding: 15px 30px; display: flex; gap: 10px; flex-wrap: wrap; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        .filter-btn {
+            padding: 8px 18px; border-radius: 20px; text-decoration: none;
+            font-size: 0.85rem; background: #eee; color: #333;
+        }
+        .filter-btn.active { background: #e74c3c; color: white; }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .card {
+            background: white; border-radius: 12px; padding: 20px 25px;
+            margin-bottom: 15px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-decoration: none; color: inherit;
+        }
+        .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .card-left h3 { margin: 0 0 6px; font-size: 1.1rem; }
+        .card-left p { margin: 0; color: #666; font-size: 0.9rem; }
+        .badge {
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+            font-size: 0.75rem; background: #fdecea; color: #e74c3c; margin-right: 6px;
+        }
+        .price { font-size: 1rem; font-weight: bold; color: #e74c3c; white-space: nowrap; }
+        .empty { text-align: center; color: #999; padding: 60px 0; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="/restaurant">홈</a>
+    <h1>맛집 목록</h1>
+</div>
+
+<div class="filter-bar">
+    <a href="/restaurant/list"
+       th:classappend="${selectedCategory == null} ? ' active' : ''"
+       class="filter-btn">전체</a>
+    <a th:each="cat : ${categories}"
+       th:href="@{/restaurant/list(category=${cat.name()})}"
+       th:text="${cat.displayName}"
+       th:classappend="${selectedCategory != null and selectedCategory.name() == cat.name()} ? ' active' : ''"
+       class="filter-btn"></a>
+</div>
+
+<div class="container">
+    <div th:if="${#lists.isEmpty(restaurants)}" class="empty">
+        해당 카테고리의 맛집이 없습니다.
+    </div>
+    <a th:each="r : ${restaurants}"
+       th:href="@{/restaurant/{id}(id=${r.id})}"
+       class="card">
+        <div class="card-left">
+            <h3 th:text="${r.name}"></h3>
+            <p>
+                <span class="badge" th:text="${r.category.displayName}"></span>
+                <span th:if="${r.soloFriendly}" class="badge">혼밥 OK</span>
+                <span th:text="${r.description}"></span>
+            </p>
+            <p style="margin-top:6px; color:#999; font-size:0.82rem;" th:text="${r.address}"></p>
+        </div>
+        <div class="price" th:text="${#numbers.formatInteger(r.avgPrice, 0, 'COMMA') + '원~'}"></div>
+    </a>
+</div>
+
+</body>
+</html>

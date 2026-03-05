@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상암동 맛집 추천</title>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        .hero { background: #e74c3c; color: white; text-align: center; padding: 60px 20px; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .hero p { font-size: 1.1rem; opacity: 0.85; }
+        .btn-random {
+            display: inline-block; margin-top: 25px;
+            background: white; color: #e74c3c;
+            font-size: 1.3rem; font-weight: bold;
+            padding: 15px 40px; border-radius: 50px;
+            text-decoration: none; transition: transform 0.2s;
+        }
+        .btn-random:hover { transform: scale(1.05); }
+        .section { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .section h2 { font-size: 1.3rem; color: #333; margin-bottom: 20px; }
+        .category-grid { display: flex; gap: 15px; flex-wrap: wrap; }
+        .category-btn {
+            display: block; width: 160px; padding: 20px;
+            text-align: center; border-radius: 12px;
+            text-decoration: none; font-size: 1rem; font-weight: bold;
+            background: white; color: #333; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s;
+        }
+        .category-btn:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .icon { font-size: 2rem; display: block; margin-bottom: 8px; }
+        .all-btn {
+            display: inline-block; padding: 12px 30px;
+            background: #333; color: white; border-radius: 8px;
+            text-decoration: none; font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>상암동 맛집 추천</h1>
+    <p>Woori FISA 교육생을 위한 점심 해결사</p>
+    <a href="/restaurant/random" class="btn-random">오늘 뭐 먹지? 🎲</a>
+</div>
+
+<div class="section">
+    <h2>카테고리로 찾기</h2>
+    <div class="category-grid">
+        <a th:each="cat : ${categories}"
+           th:href="@{/restaurant/list(category=${cat.name()})}"
+           class="category-btn">
+            <span class="icon"
+                  th:text="${cat.name() == 'KOREAN'} ? '🍚' :
+                            (${cat.name() == 'JAPANESE'} ? '🍱' :
+                            (${cat.name() == 'WESTERN'} ? '🍔' : '🥢'))"></span>
+            <span th:text="${cat.displayName}"></span>
+        </a>
+    </div>
+</div>
+
+<div class="section">
+    <a href="/restaurant/list" class="all-btn">전체 목록 보기</a>
+</div>
+
+</body>
+</html>
