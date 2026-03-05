@@ -128,8 +128,27 @@ public String random(Model model) {
 }
 ```
 
-### 6. 맛집 등록 (추후 추가)
+### 6. 맛집 등록 (`GET /restaurant/new`, `POST /restaurant`)
+- 새로운 맛집 정보를 입력받아 인메모리 리스트에 저장합니다.
+- 상호명, 카테고리, 주소, 메뉴, 가격, 한줄평, 혼밥 여부를 등록할 수 있습니다.
+- PRG(Post-Redirect-Get) 패턴을 적용하여 새로고침 시 데이터 중복 등록을 방지합니다.
+```java
+    // 1. 맛집 등록 폼 페이지 (GET)
+    @GetMapping("/new")
+    public String addForm(Model model) {
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("restaurant", new Restaurant()); // 빈 객체를 넘겨서 폼 세팅
+        return "addForm";
+    }
 
+    // 2. 맛집 등록 데이터 처리하기 (POST)
+    @PostMapping
+    public String addRestaurant(@ModelAttribute Restaurant restaurant) {
+        restaurantService.save(restaurant);
+        // 처리 완료 후, 뷰(html)를 렌더링하지 않고 목록 URL로 리다이렉트 (PRG 패턴)
+        return "redirect:/restaurant/list";
+    }
+```
 ---
 
 ## 실행 방법
